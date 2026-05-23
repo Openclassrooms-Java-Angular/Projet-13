@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Test WebSocket Chat</title>
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7/bundles/stomp.umd.min.js"></script>
+</head>
+<body>
+  <h1>Test chat</h1>
+  <button onclick="connect()">Connecter</button>
+  <button onclick="sendMessage()">Envoyer</button>
+  <pre id="log"></pre>
+
+  <script>
+    let client;
+
+    function log(message) {
+      document.getElementById('log').textContent += message + '\n';
+    }
+
+    function connect() {
+      client = new StompJs.Client({
+        brokerURL: 'ws://localhost:8080/ws',
+        reconnectDelay: 5000,
+        debug: str => log(str)
+      });
+
+      client.onConnect = () => {
+        log('Connecté');
+        client.subscribe('/topic/conversations/1', message => {
+          log('Reçu: ' + message.body);
+        });
+      };
+
+      client.onStompError = frame => {
+        log('Erreur STOMP: ' + frame.headers['message']);
+      };
+
+      client.activate();
+    }
+
+    function sendMessage() {
+      client.publish({
+        destination: '/app/chat.send',
+        body: JSON.stringify({
+          conversationId: 1,
+          senderId: 1,
+          content: 'Bonjour en WebSocket'
+        })
+      });
+      log('Message envoyé');
+    }
+  </script>
+</body>
+</html>
