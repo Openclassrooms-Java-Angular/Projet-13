@@ -1,0 +1,35 @@
+<div style="max-width: 700px; margin: 2rem auto; font-family: Arial, sans-serif;">
+  <h2>Support client Your Car Your Way</h2>
+
+  <div style="margin-bottom: 1rem;">
+    <label>
+      Conversation :
+      <input type="number" [(ngModel)]="conversationId" disabled />
+    </label>
+
+    <label style="margin-left: 1rem;">
+      Expéditeur :
+      <select [(ngModel)]="senderId">
+        <option *ngFor="let user of users" [ngValue]="user.id">
+          {{ user.firstName }} {{ user.lastName }} ({{ user.role }})
+        </option>
+      </select>
+    </label>
+  </div>
+
+  <div style="border: 1px solid #ccc; padding: 1rem; min-height: 300px; margin-bottom: 1rem; overflow-y: auto;">
+    <div *ngFor="let message of messages" style="margin-bottom: 0.75rem;">
+      <strong>{{ getUserLabel(message.senderId) }} :</strong>
+      <span>{{ message.content }}</span>
+      <div style="font-size: 0.8rem; color: #666;">
+        {{ message.sentAt | date:'dd/MM/yyyy à HH:mm' }}
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; gap: 0.5rem;">
+    <input type="text" [(ngModel)]="content" (keyup.enter)="sendMessage()" placeholder="Votre message"
+      style="flex: 1; padding: 0.5rem;" />
+    <button (click)="sendMessage()">Envoyer</button>
+  </div>
+</div>
