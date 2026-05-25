@@ -99,6 +99,10 @@ Au chargement de la page :
 4. Vérifier qu'il apparaît immédiatement dans l'autre fenêtre
 5. Recharger la page pour vérifier que l'historique est conservé
 
+## API et documentation Swagger
+
+La documentation interactive de l'API est disponible ici : [Documentation Swagger](http://localhost:8080/swagger-ui/index.html)
+
 ## Limites du PoC
 
 - Une seule conversation de démonstration est utilisée
